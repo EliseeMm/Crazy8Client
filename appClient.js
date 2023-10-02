@@ -43,8 +43,30 @@ ws.addEventListener('message', (event) => {
         var template = Handlebars.compile(document.querySelector('#currentPlayerCards').innerHTML)
         var filled = template(data);
         document.querySelector("#output").innerHTML = filled;
+        
+        
+        let cardButtons = document.querySelectorAll('#cards')
+
+
+        function sendCard(){
+            alert(event.value)
+        }
+        
+        
+        cardButtons.forEach((item) => {
+            item.addEventListener('click',function(e){
+                let cardType = e.target.parentNode.value.split("_");
+                data = {
+                    command: 'gameplay',
+                    action: 'discard',
+                    card: {suit:cardType[1], number:cardType[0]}
+                }
+                ws.send(JSON.stringify(data))
+            })
+        })
     }
 })
+
 // ws.onclose = () => alert("WebSocket connection closed");
 
 // // Add event listeners to button and input field

@@ -20,17 +20,16 @@
     <script type="text/x-handlebars-template" id="currentPlayerCards" >
         <h1>player Cards</h1>
         <img src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
+        <button id="stockPile"> <img src="/poker-qr/2B.svg"></button>
         <ol>
             {{#each cardList}}
-            <button id="cards"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
+            <button id="cards" value="{{this.number}}_{{this.suit}}"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
             {{/each}}
         </ol>
         
     </script>
 
-    <div id="output">
-
-    </div>
+    <div id="output"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <script src="appClient.js"></script>
