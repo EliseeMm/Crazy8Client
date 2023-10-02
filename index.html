@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crazy Eight Client</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    <header>
+        <h1>Client</h1>
+    </header>
+    
+    
+    <form id="join-form">
+        <input id="name" name="name" type="text" autocomplete="address-level1" required>
+        <input id="submit" type="submit" value="submit">
+    </form>
+    
+
+    <script type="text/x-handlebars-template" id="currentPlayerCards" >
+        <h1>player Cards</h1>
+        <img src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
+        <ol>
+            {{#each cardList}}
+            <button id="cards"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
+            {{/each}}
+        </ol>
+        
+    </script>
+
+    <div id="output">
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="appClient.js"></script>
+</body>
+</html>
