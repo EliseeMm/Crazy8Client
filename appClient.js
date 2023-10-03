@@ -29,8 +29,7 @@ btn.addEventListener('click',(event) =>{
 
 ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
-    
-    console.log(data)
+
     if(data.messageType == 'gameplay'){
 
     
@@ -47,12 +46,6 @@ ws.addEventListener('message', (event) => {
         
         let cardButtons = document.querySelectorAll('#cards')
 
-
-        function sendCard(){
-            alert(event.value)
-        }
-        
-        
         cardButtons.forEach((item) => {
             item.addEventListener('click',function(e){
                 let cardType = e.target.parentNode.value.split("_");
@@ -63,6 +56,17 @@ ws.addEventListener('message', (event) => {
                 }
                 ws.send(JSON.stringify(data))
             })
+        })
+
+        let stockPile = document.querySelector('#stockPile')
+        console.log(stockPile)
+
+        stockPile.addEventListener('click',function(e){
+            data = {
+                command: 'gameplay',
+                action: 'pickUpCard',
+            }
+            ws.send(JSON.stringify(data))
         })
     }
 })

@@ -19,8 +19,10 @@
 
     <script type="text/x-handlebars-template" id="currentPlayerCards" >
         <h1>player Cards</h1>
+        
         <img src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
-        <button id="stockPile"> <img src="/poker-qr/2B.svg"></button>
+        
+        <button id ="stockPile"><img src="/poker-qr/2B.svg"></button>
         <ol>
             {{#each cardList}}
             <button id="cards" value="{{this.number}}_{{this.suit}}"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
