@@ -25,11 +25,8 @@ btn.addEventListener('click',(event) =>{
         });
 
 
-
-
 ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
-
     if(data.messageType == 'gameplay'){
 
     
@@ -47,20 +44,30 @@ ws.addEventListener('message', (event) => {
         let cardButtons = document.querySelectorAll('#cards')
 
         cardButtons.forEach((item) => {
-            item.addEventListener('click',function(e){
+            item.addEventListener('click',async function(e){
                 let cardType = e.target.parentNode.value.split("_");
+                
                 data = {
                     command: 'gameplay',
                     action: 'discard',
                     card: {suit:cardType[1], number:cardType[0]}
+                }
+                
+                
+                if(cardType[0] == "8"){
+                    
+                    console.log(item.getBoundingClientRect())
+                    createSuitSelection()
+
+                    await myFunc()
+
+                    data.arguments = getSuit();
                 }
                 ws.send(JSON.stringify(data))
             })
         })
 
         let stockPile = document.querySelector('#stockPile')
-        console.log(stockPile)
-
         stockPile.addEventListener('click',function(e){
             data = {
                 command: 'gameplay',
@@ -69,8 +76,98 @@ ws.addEventListener('message', (event) => {
             ws.send(JSON.stringify(data))
         })
     }
+    
+    if(data.messageType == 'waitingPlayers'){
+        data = {
+            message : data.message
+        }
+        var template = Handlebars.compile(document.querySelector('#serverMessages').innerHTML)
+        var filled = template(data);
+        document.querySelector("#output").innerHTML = filled;
+    }
 })
 
+
+function  createSuitSelection(){
+    const suitSelector = document.createElement('div');
+    suitSelector.setAttribute('id','suitSelection')
+    
+    const listOfSuits = document.createElement('ul')
+    
+    const heartsButton = document.createElement('button')
+    heartsButton.innerText = 'Hearts'
+    // heartsButton.setAttribute('value','Hearts')
+    heartsButton.setAttribute('class','suits')
+
+
+    const spadesButton = document.createElement('button')
+    spadesButton.innerText = 'Spades'
+    // spadesButton.setAttribute('value','Spades')
+    spadesButton.setAttribute('class','suits')
+
+    const clubsButton = document.createElement('button')
+    clubsButton.innerText = 'Clubs'
+    // clubsButton.setAttribute('value','Clubs')
+    clubsButton.setAttribute('class','suits')
+
+    const diamondsButton = document.createElement('button')
+    diamondsButton.innerText = 'Diamonds'
+    // diamondsButton.setAttribute('value','Diamonds')
+    diamondsButton.setAttribute('class','suits')
+
+    listOfSuits.appendChild(heartsButton);
+    listOfSuits.appendChild(spadesButton);
+    listOfSuits.appendChild(clubsButton);
+    listOfSuits.appendChild(diamondsButton);
+
+    suitSelector.appendChild(listOfSuits)
+
+    document.body.appendChild(suitSelector)
+
+
+    const suits = document.querySelectorAll('.suits')
+    
+
+
+
+    suits.forEach((item) => {
+        item.addEventListener('click',function(e){
+            let suit =  e.target.innerText
+            item.setAttribute('value',suit)
+        })
+    })
+    
+}
+
+function waitForClick(){
+    return new Promise( resolve => {
+        const buttons = document.querySelectorAll('.suits');
+
+        function clickHandler(){
+            buttons.forEach(button =>
+                button.removeEventListener('click',clickHandler));
+                resolve()
+        }
+
+        buttons.forEach(button => button.addEventListener('click',clickHandler))
+    })
+}
+
+async function myFunc(){
+    await waitForClick()
+    console.log('button clicked')
+}
+
+function getSuit(){
+    const suits = document.querySelectorAll('.suit')
+
+    for(let suit in suits){
+        if(suit.value != ""){
+            return suit.value
+        }
+    }
+    return ""
+}
 // ws.onclose = () => alert("WebSocket connection closed");
 
 // // Add event listeners to button and input field
