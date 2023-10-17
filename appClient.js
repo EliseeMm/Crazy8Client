@@ -61,7 +61,9 @@ ws.addEventListener('message', (event) => {
 
                     await myFunc()
 
-                    data.arguments = getSuit();
+                    let suit = getSuit();
+                    console.log(suit)
+                    data.arguments = suit
                 }
                 ws.send(JSON.stringify(data))
             })
@@ -95,23 +97,23 @@ function  createSuitSelection(){
     const listOfSuits = document.createElement('ul')
     
     const heartsButton = document.createElement('button')
-    heartsButton.innerText = 'Hearts'
+    heartsButton.innerText = 'H'
     // heartsButton.setAttribute('value','Hearts')
     heartsButton.setAttribute('class','suits')
 
 
     const spadesButton = document.createElement('button')
-    spadesButton.innerText = 'Spades'
+    spadesButton.innerText = 'S'
     // spadesButton.setAttribute('value','Spades')
     spadesButton.setAttribute('class','suits')
 
     const clubsButton = document.createElement('button')
-    clubsButton.innerText = 'Clubs'
+    clubsButton.innerText = 'C'
     // clubsButton.setAttribute('value','Clubs')
     clubsButton.setAttribute('class','suits')
 
     const diamondsButton = document.createElement('button')
-    diamondsButton.innerText = 'Diamonds'
+    diamondsButton.innerText = 'D'
     // diamondsButton.setAttribute('value','Diamonds')
     diamondsButton.setAttribute('class','suits')
 
@@ -143,13 +145,17 @@ function waitForClick(){
     return new Promise( resolve => {
         const buttons = document.querySelectorAll('.suits');
 
-        function clickHandler(){
-            buttons.forEach(button =>
-                button.removeEventListener('click',clickHandler));
-                resolve()
+        function clickHandler(event){
+            // console.log(event.target.value)
+
+            event.target.setAttribute('value',event.target.value)
+
+            
+            
+            resolve()
         }
 
-        buttons.forEach(button => button.addEventListener('click',clickHandler))
+        buttons.forEach(button => button.addEventListener('click',event =>clickHandler(event)))
     })
 }
 
@@ -159,14 +165,18 @@ async function myFunc(){
 }
 
 function getSuit(){
-    const suits = document.querySelectorAll('.suit')
+    const suits = document.querySelectorAll('.suits')
+    let selected = '';
 
-    for(let suit in suits){
-        if(suit.value != ""){
-            return suit.value
+    for(let i = 0; i < suits.length;i++){
+        if(suits[i].value){
+            selected = suits[i].value
         }
     }
-    return ""
+    const suitSelector = document.getElementById('suitSelection')
+    suitSelector.remove()
+    
+    return selected
 }
 // ws.onclose = () => alert("WebSocket connection closed");
 

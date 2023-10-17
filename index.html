@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crazy Eight Client</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -20,7 +20,7 @@
     <script type="text/x-handlebars-template" id="currentPlayerCards" >
         <h1>player Cards</h1>
         
-        <img src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
+        <img id="centreCard" src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
         
         <button id ="stockPile"><img src="/poker-qr/2B.svg"></button>
         <ol>

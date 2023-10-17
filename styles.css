@@ -1,0 +1,21 @@
+img {
+    height: auto;
+    width: 103%;
+}
+
+#stockPile{
+    height: auto;
+    width: 10%;
+}
+
+#centreCard {
+    height: auto;
+    width: 10%;
+}
+
+button{
+    border-color: transparent;
+    background-color: transparent;
+    padding: 0px 0px;
+    width: 10%;
+}
