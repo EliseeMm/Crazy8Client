@@ -19,12 +19,27 @@ btn.addEventListener('click',(event) =>{
     ws.send(JSON.stringify(request))
 
     const form = document.getElementById('join-form')
+    form.style.display = 'block'
+    console.log(form.style.display)
     event.preventDefault();  // to not refresh the page
-    form.remove() // remove the form
+    // form.remove() // remove the form
+
+    toggle('join-form')
+
 
         });
 
 
+
+function toggle(selector){
+    const form = document.getElementById(selector)
+    if(form.style.display == 'none'){
+        form.style.display = 'block';
+    }
+    else{
+        form.style.display = 'none';
+    }
+}
 ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if(data.messageType == 'gameplay'){
@@ -86,6 +101,16 @@ ws.addEventListener('message', (event) => {
         var template = Handlebars.compile(document.querySelector('#serverMessages').innerHTML)
         var filled = template(data);
         document.querySelector("#output").innerHTML = filled;
+    }
+
+    if(data.messageType == 'nameTaken'){
+        data = {
+            message : data.message
+        }
+        var template = Handlebars.compile(document.querySelector('#serverMessages').innerHTML)
+        var filled = template(data);
+        document.querySelector("#output").innerHTML = filled;
+        toggle('join-form')
     }
 })
 
