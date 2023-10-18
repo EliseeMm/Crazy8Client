@@ -20,7 +20,6 @@ btn.addEventListener('click',(event) =>{
 
     const form = document.getElementById('join-form')
     form.style.display = 'block'
-    console.log(form.style.display)
     event.preventDefault();  // to not refresh the page
     // form.remove() // remove the form
 
@@ -33,18 +32,21 @@ btn.addEventListener('click',(event) =>{
 
 function toggle(selector){
     const form = document.getElementById(selector)
-    if(form.style.display == 'none'){
-        form.style.display = 'block';
+
+
+        if(form.style.display == 'none'){
+            form.style.display = 'block';
+        }
+        else{
+            form.style.display = 'none';
+        }
     }
-    else{
-        form.style.display = 'none';
-    }
-}
 ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if(data.messageType == 'gameplay'){
 
-    
+    const suits = createSuitSelection()
+
         data = {
             cardList : data.cards,
             centreCard : data.centreCard
@@ -60,6 +62,10 @@ ws.addEventListener('message', (event) => {
 
         cardButtons.forEach((item) => {
             item.addEventListener('click',async function(e){
+
+                
+                // toggle('suitSelection')
+
                 let cardType = e.target.parentNode.value.split("_");
                 
                 data = {
@@ -69,11 +75,13 @@ ws.addEventListener('message', (event) => {
                 }
                 
                 
+                
                 if(cardType[0] == "8"){
                     
                     console.log(item.getBoundingClientRect())
-                    createSuitSelection()
-
+                    
+                    toggle('suitSelection')
+                    
                     await myFunc()
 
                     let suit = getSuit();
@@ -149,6 +157,8 @@ function  createSuitSelection(){
 
     suitSelector.appendChild(listOfSuits)
 
+    suitSelector.style.display = 'none';
+
     document.body.appendChild(suitSelector)
 
 
@@ -163,6 +173,8 @@ function  createSuitSelection(){
             item.setAttribute('value',suit)
         })
     })
+
+    return suitSelector
     
 }
 
