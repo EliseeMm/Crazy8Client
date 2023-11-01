@@ -12,21 +12,26 @@ const btn = document.getElementById('submit')
 btn.addEventListener('click',(event) =>{
     let name = document.getElementById('name');
     var namev = name.value
-    const request = {
-                name: namev,
-                command : "join"
-            }
-    ws.send(JSON.stringify(request))
 
-    const form = document.getElementById('join-form')
-    form.style.display = 'block'
-    event.preventDefault();  // to not refresh the page
-    // form.remove() // remove the form
+    if(name.length != 0){
+        const request = {
+                    name: namev,
+                    command : "join"
+                }
+        ws.send(JSON.stringify(request))
 
-    toggle('join-form')
+        const form = document.getElementById('join-form')
+        form.style.display = 'block'
+        event.preventDefault();  // to not refresh the page
+        // form.remove() // remove the form
 
+        toggle('join-form')
 
-        });
+        }
+    else{
+        alert("name cant be empty")
+    }
+})
 
 
 
@@ -43,13 +48,16 @@ function toggle(selector){
     }
 ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
+    console.log(data);
     if(data.messageType == 'gameplay'){
 
     const suits = createSuitSelection()
 
         data = {
             cardList : data.cards,
-            centreCard : data.centreCard
+            centreCard : data.centreCard,
+            playerName: data.playerName,
+            otherPlayerCards: Array.from({length:data.otherPlayerCards},(_,i) => i+1)
         }
         
 
@@ -104,7 +112,8 @@ ws.addEventListener('message', (event) => {
     
     if(data.messageType == 'waitingPlayers'){
         data = {
-            message : data.message
+            message : data.message,
+            playerName: data.playerName
         }
         var template = Handlebars.compile(document.querySelector('#serverMessages').innerHTML)
         var filled = template(data);
@@ -113,7 +122,8 @@ ws.addEventListener('message', (event) => {
 
     if(data.messageType == 'nameTaken'){
         data = {
-            message : data.message
+            message : data.message,
+            playerName: data.playerName
         }
         var template = Handlebars.compile(document.querySelector('#serverMessages').innerHTML)
         var filled = template(data);

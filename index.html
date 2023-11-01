@@ -6,12 +6,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Client</h1>
-    </header>
-    
-    
     <form id="join-form">
+        <h1>Welcome to crazy 8</h1>
         <input id="name" name="name" type="text" autocomplete="address-level1" required>
         <input id="submit" type="submit" value="submit">
     </form>
@@ -19,19 +15,35 @@
 
     <script type="text/x-handlebars-template" id="currentPlayerCards" >
         <h1>player Cards</h1>
+
+        <div class="cards">
+            
+            <ol>
+                {{#each otherPlayerCards}}
+                <img class="otherPlayerCards" src="/poker-qr/2B.svg">
+                {{/each}}
+            </ol>
+            
+        </div>
         
-        <img id="centreCard" src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
+        <div class="stackAndCentre">
+            <img id="centreCard" src="/poker-qr/{{centreCard.number}}{{centreCard.suit}}.svg">
+            <button id ="stockPile"><img src="/poker-qr/2B.svg"></button>
+        </div>
         
-        <button id ="stockPile"><img src="/poker-qr/2B.svg"></button>
-        <ol>
-            {{#each cardList}}
-            <button id="cards" value="{{this.number}}_{{this.suit}}"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
-            {{/each}}
-        </ol>
+        <div class="cards">
+            <ol>
+                {{#each cardList}}
+                <button id="cards" value="{{this.number}}_{{this.suit}}"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
+                {{/each}}
+            </ol>
+            <p>{{playerName}}</p>
+        </div>
     </script>
 
     <script type="text/x-handlebars-template" id="serverMessages">
         <h1>Server Messages</h1>
+        <p>Your name: {{playerName}}</p>
         <p>{{message}}</p>
     </script>
 
