@@ -37,8 +37,6 @@ btn.addEventListener('click',(event) =>{
 
 function toggle(selector){
     const form = document.getElementById(selector)
-
-
         if(form.style.display == 'none'){
             form.style.display = 'block';
         }
@@ -46,6 +44,7 @@ function toggle(selector){
             form.style.display = 'none';
         }
     }
+
 ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     console.log(data);
@@ -57,14 +56,25 @@ ws.addEventListener('message', (event) => {
             cardList : data.cards,
             centreCard : data.centreCard,
             playerName: data.playerName,
-            otherPlayerCards: Array.from({length:data.otherPlayerCards},(_,i) => i+1)
+            otherPlayerCards: Array.from({length:data.otherPlayerCards},(_,i) => i+1),
+            currentPlayer : data.currentPlayer
         }
         
-
+    
         var template = Handlebars.compile(document.querySelector('#currentPlayerCards').innerHTML)
         var filled = template(data);
         document.querySelector("#output").innerHTML = filled;
         
+
+        if(data.playerName == data.currentPlayer){
+            console.log("they do")
+            var div = document.getElementById("playerCards")
+            if(div != null){
+                console.log('it exits')
+
+                // div.style.backgroundColor = "black"
+            }
+        }
         
         let cardButtons = document.querySelectorAll('#cards')
 
@@ -82,8 +92,6 @@ ws.addEventListener('message', (event) => {
                     card: {suit:cardType[1], number:cardType[0]}
                 }
                 
-                
-                
                 if(cardType[0] == "8"){
                     
                     console.log(item.getBoundingClientRect())
@@ -91,7 +99,6 @@ ws.addEventListener('message', (event) => {
                     toggle('suitSelection')
                     
                     await myFunc()
-
                     let suit = getSuit();
                     console.log(suit)
                     data.arguments = suit
@@ -132,6 +139,11 @@ ws.addEventListener('message', (event) => {
     }
 })
 
+// A helper function for handlebars to check if 2 values are equal or the same
+Handlebars.registerHelper('ifEquals', function (a, b, options) {
+    if (a == b) { return options.fn(this); }
+    return options.inverse(this);
+});
 
 function  createSuitSelection(){
     const suitSelector = document.createElement('div');
@@ -194,11 +206,7 @@ function waitForClick(){
 
         function clickHandler(event){
             // console.log(event.target.value)
-
             event.target.setAttribute('value',event.target.value)
-
-            
-            
             resolve()
         }
 
@@ -214,7 +222,6 @@ async function myFunc(){
 function getSuit(){
     const suits = document.querySelectorAll('.suits')
     let selected = '';
-
     for(let i = 0; i < suits.length;i++){
         if(suits[i].value){
             selected = suits[i].value
@@ -222,7 +229,6 @@ function getSuit(){
     }
     const suitSelector = document.getElementById('suitSelection')
     suitSelector.remove()
-    
     return selected
 }
 // ws.onclose = () => alert("WebSocket connection closed");

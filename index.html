@@ -17,7 +17,6 @@
         <h1>player Cards</h1>
 
         <div class="cards">
-            
             <ol>
                 {{#each otherPlayerCards}}
                 <img class="otherPlayerCards" src="/poker-qr/2B.svg">
@@ -31,13 +30,16 @@
             <button id ="stockPile"><img src="/poker-qr/2B.svg"></button>
         </div>
         
-        <div class="cards">
+        <div class="cards" id="playerCards">
             <ol>
                 {{#each cardList}}
                 <button id="cards" value="{{this.number}}_{{this.suit}}"><img src="/poker-qr/{{this.number}}{{this.suit}}.svg"></button>
                 {{/each}}
             </ol>
             <p>{{playerName}}</p>
+            {{#ifEquals playerName currentPlayer}}
+                <h1>You are current player</h1>
+            {{/ifEquals}}
         </div>
     </script>
 
